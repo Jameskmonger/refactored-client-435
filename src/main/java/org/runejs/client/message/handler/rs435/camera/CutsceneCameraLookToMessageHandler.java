@@ -27,13 +27,13 @@ public class CutsceneCameraLookToMessageHandler implements MessageHandler<Cutsce
             int horizontalDistance = (int) Math.sqrt((double) (deltaY * deltaY + deltaX * deltaX));
 
             // (maybe) convert radians to 2048-step rotational unit
-            Class26.cameraVerticalRotation = (int) (325.949 * Math.atan2((double) deltaZ, (double) horizontalDistance)) & 0x7ff;
-            ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation = (int) (-325.949 * Math.atan2((double) deltaX, (double) deltaY)) & 0x7ff;
+            Main.SPHERICAL_CAMERA.setPitch((int) (325.949 * Math.atan2((double) deltaZ, (double) horizontalDistance)) & 0x7ff);
+            Main.SPHERICAL_CAMERA.setYaw((int) (-325.949 * Math.atan2((double) deltaX, (double) deltaY)) & 0x7ff);
 
-            if(Class26.cameraVerticalRotation < 128)
-                Class26.cameraVerticalRotation = 128;
-            if(Class26.cameraVerticalRotation > 383)
-                Class26.cameraVerticalRotation = 383;
+//            if(Main.camera.pitch < 128)
+//                Main.camera.pitch = 128;
+//            if(Main.camera.pitch > 383)
+//                Main.camera.pitch = 383;
         }
     }
 }

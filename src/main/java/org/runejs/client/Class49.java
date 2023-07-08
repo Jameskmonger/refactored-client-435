@@ -34,10 +34,10 @@ public class Class49 {
             yOffset = -(xOffset * sine) + yOffset * cosine >> 16;
             xOffset = temp;
         }
-        ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation = yaw;
+        Main.SPHERICAL_CAMERA.setYaw(yaw);
         SceneCluster.cameraZ = -zOffset + z;
         Class12.cameraX = -xOffset + x;
-        Class26.cameraVerticalRotation = pitch;
+        Main.SPHERICAL_CAMERA.setPitch(pitch);
         MovedStatics.cameraY = y + -yOffset;
     }
 

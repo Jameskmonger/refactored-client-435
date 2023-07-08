@@ -1972,11 +1972,11 @@ public class MovedStatics {
 	        int i = Class37.getFloorDrawHeight(Player.worldLevel, arg2, arg1) + -arg0;
 	        arg1 -= cameraY;
 	        i -= SceneCluster.cameraZ;
-	        int i_1_ = Model.COSINE[Class26.cameraVerticalRotation];
-	        int i_2_ = Model.SINE[Class26.cameraVerticalRotation];
+	        int i_1_ = Model.COSINE[Main.SPHERICAL_CAMERA.getPitch()];
+	        int i_2_ = Model.SINE[Main.SPHERICAL_CAMERA.getPitch()];
 	        arg2 -= Class12.cameraX;
-	        int i_3_ = Model.SINE[ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation];
-	        int i_4_ = Model.COSINE[ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation];
+	        int i_3_ = Model.SINE[Main.SPHERICAL_CAMERA.getYaw()];
+	        int i_4_ = Model.COSINE[Main.SPHERICAL_CAMERA.getYaw()];
 	        int i_5_ = arg1 * i_3_ + arg2 * i_4_ >> 16;
 	        arg1 = i_4_ * arg1 - arg2 * i_3_ >> 16;
 	        if(arg3 != 4976905)

@@ -30,10 +30,7 @@ import org.runejs.client.message.outbound.widget.container.DragWidgetItemOutboun
 import org.runejs.client.net.*;
 import org.runejs.client.net.codec.MessagePacketCodec;
 import org.runejs.client.net.codec.runejs435.RuneJS435PacketCodec;
-import org.runejs.client.scene.GroundItemTile;
-import org.runejs.client.scene.InteractiveObject;
-import org.runejs.client.scene.Scene;
-import org.runejs.client.scene.SceneCluster;
+import org.runejs.client.scene.*;
 import org.runejs.client.scene.util.CollisionMap;
 import org.runejs.client.sound.MusicSystem;
 import org.runejs.client.sound.SoundSystem;
@@ -68,6 +65,8 @@ public class Main extends GameShell {
      * The registry that holds all the InboundMessage handlers.
      */
     public static final MessageHandlerRegistry handlerRegistry = new RS435HandlerRegistry();
+
+    public static final SphericalCamera SPHERICAL_CAMERA = new SphericalCamera();
 
     public static int anInt1756 = 0;
     public static int menuOffsetY;
@@ -807,44 +806,44 @@ public class Main extends GameShell {
         } else {
             i = MovedStatics.method546();
         }
-        int i_1_ = Class12.cameraX;
-        int i_2_ = ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation;
-        int i_3_ = SceneCluster.cameraZ;
-        int i_4_ = Class26.cameraVerticalRotation;
-        int i_5_ = MovedStatics.cameraY;
-        for(int i_6_ = 0; i_6_ < 5; i_6_++) {
-            if(Projectile.customCameraActive[i_6_]) {
-                int i_7_ = (int) ((double) (MovedStatics.customCameraJitter[i_6_] * 2 + 1) * Math.random() - (double) MovedStatics.customCameraJitter[i_6_] + Math.sin((double) MovedStatics.customCameraTimer[i_6_] * ((double) GroundItemTile.customCameraFrequency[i_6_] / 100.0)) * (double) customCameraAmplitude[i_6_]);
-                if(i_6_ == 1) {
-                    SceneCluster.cameraZ += i_7_;
-                }
-                if(i_6_ == 0) {
-                    Class12.cameraX += i_7_;
-                }
-                if(i_6_ == 2) {
-                    MovedStatics.cameraY += i_7_;
-                }
-                if(i_6_ == 4) {
-                    Class26.cameraVerticalRotation += i_7_;
-                    if(Class26.cameraVerticalRotation < 128) {
-                        Class26.cameraVerticalRotation = 128;
-                    }
-                    if(Class26.cameraVerticalRotation > 383) {
-                        Class26.cameraVerticalRotation = 383;
-                    }
-                }
-                if(i_6_ == 3) {
-                    ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation = 0x7ff & i_7_ + ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation;
-                }
-            }
-        }
+//        int i_1_ = Class12.cameraX;
+//        int i_2_ = Main.camera.yaw;
+//        int i_3_ = SceneCluster.cameraZ;
+//        int i_4_ = Main.camera.pitch;
+//        int i_5_ = MovedStatics.cameraY;
+//        for(int i_6_ = 0; i_6_ < 5; i_6_++) {
+//            if(Projectile.customCameraActive[i_6_]) {
+//                int i_7_ = (int) ((double) (MovedStatics.customCameraJitter[i_6_] * 2 + 1) * Math.random() - (double) MovedStatics.customCameraJitter[i_6_] + Math.sin((double) MovedStatics.customCameraTimer[i_6_] * ((double) GroundItemTile.customCameraFrequency[i_6_] / 100.0)) * (double) customCameraAmplitude[i_6_]);
+//                if(i_6_ == 1) {
+//                    SceneCluster.cameraZ += i_7_;
+//                }
+//                if(i_6_ == 0) {
+//                    Class12.cameraX += i_7_;
+//                }
+//                if(i_6_ == 2) {
+//                    MovedStatics.cameraY += i_7_;
+//                }
+//                if(i_6_ == 4) {
+//                    Main.camera.pitch += i_7_;
+//                    if(Main.camera.pitch < 128) {
+//                        Main.camera.pitch = 128;
+//                    }
+//                    if(Main.camera.pitch > 383) {
+//                        Main.camera.pitch = 383;
+//                    }
+//                }
+//                if(i_6_ == 3) {
+//                    Main.camera.yaw = 0x7ff & i_7_ + Main.camera.yaw;
+//                }
+//            }
+//        }
         Class65.method1018();
         Model.cursorY = Landscape.mouseY - 4;
         Model.gameScreenClickable = true;
         Model.cursorX = Class13.mouseX - 4;
         Model.resourceCount = 0;
         Rasterizer.resetPixels();
-        Npc.currentScene.render(Class12.cameraX, SceneCluster.cameraZ, MovedStatics.cameraY, Class26.cameraVerticalRotation, ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation, i);
+        Npc.currentScene.render(Class12.cameraX, SceneCluster.cameraZ, MovedStatics.cameraY, Main.SPHERICAL_CAMERA.getPitch(), Main.SPHERICAL_CAMERA.getYaw(), i);
         Npc.currentScene.clearInteractiveObjectCache();
         Class33.method404();
         MovedStatics.method450();
@@ -871,11 +870,11 @@ public class Main extends GameShell {
         }
 
         Player.drawGameScreenGraphics();
-        Class12.cameraX = i_1_;
-        MovedStatics.cameraY = i_5_;
-        ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation = i_2_;
-        Class26.cameraVerticalRotation = i_4_;
-        SceneCluster.cameraZ = i_3_;
+//        Class12.cameraX = i_1_;
+//        MovedStatics.cameraY = i_5_;
+//        Main.camera.yaw = i_2_;
+//        Main.camera.pitch = i_4_;
+//        SceneCluster.cameraZ = i_3_;
     }
 
     public static void method357(CacheArchive arg0, CacheArchive arg2) {
@@ -1215,38 +1214,38 @@ public class Main extends GameShell {
         int i_10_ = 0x7ff & (int) (-325.949 * Math.atan2((double) i_7_, (double) i_6_));
         if(i_9_ > 383)
             i_9_ = 383;
-        int i_11_ = -ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation + i_10_;
-        if(i_11_ > 1024)
-            i_11_ -= 2048;
-        if(i_11_ < -1024)
-            i_11_ += 2048;
-        if(i_11_ > 0) {
-            ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation += MovedStatics.cutsceneCameraRotationScaleAdjust * i_11_ / 1000 + Class60.cutsceneCameraRotationBaseAdjust;
-            ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation &= 0x7ff;
-        }
-        if(true) {
-            if(i_11_ < 0) {
-                ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation -= Class60.cutsceneCameraRotationBaseAdjust + MovedStatics.cutsceneCameraRotationScaleAdjust * -i_11_ / 1000;
-                ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation &= 0x7ff;
-            }
-            if(i_9_ > Class26.cameraVerticalRotation) {
-                Class26.cameraVerticalRotation += Class60.cutsceneCameraRotationBaseAdjust + MovedStatics.cutsceneCameraRotationScaleAdjust * (i_9_ - Class26.cameraVerticalRotation) / 1000;
-                if(Class26.cameraVerticalRotation > i_9_)
-                    Class26.cameraVerticalRotation = i_9_;
-            }
-            if(Class26.cameraVerticalRotation > i_9_) {
-                Class26.cameraVerticalRotation -= MovedStatics.cutsceneCameraRotationScaleAdjust * (Class26.cameraVerticalRotation + -i_9_) / 1000 + Class60.cutsceneCameraRotationBaseAdjust;
-                if(Class26.cameraVerticalRotation < i_9_)
-                    Class26.cameraVerticalRotation = i_9_;
-            }
-            int i_12_ = i_10_ + -ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation;
-            if(i_12_ > 1024)
-                i_12_ -= 2048;
-            if(i_12_ < -1024)
-                i_12_ += 2048;
-            if(i_12_ < 0 && i_11_ > 0 || i_12_ > 0 && i_11_ < 0)
-                ProducingGraphicsBuffer_Sub1.cameraHorizontalRotation = i_10_;
-        }
+//        int i_11_ = -Main.camera.yaw + i_10_;
+//        if(i_11_ > 1024)
+//            i_11_ -= 2048;
+//        if(i_11_ < -1024)
+//            i_11_ += 2048;
+//        if(i_11_ > 0) {
+//            Main.camera.yaw += MovedStatics.cutsceneCameraRotationScaleAdjust * i_11_ / 1000 + Class60.cutsceneCameraRotationBaseAdjust;
+//            Main.camera.yaw &= 0x7ff;
+//        }
+//        if(true) {
+//            if(i_11_ < 0) {
+//                Main.camera.yaw -= Class60.cutsceneCameraRotationBaseAdjust + MovedStatics.cutsceneCameraRotationScaleAdjust * -i_11_ / 1000;
+//                Main.camera.yaw &= 0x7ff;
+//            }
+//            if(i_9_ > Main.camera.pitch) {
+//                Main.camera.pitch += Class60.cutsceneCameraRotationBaseAdjust + MovedStatics.cutsceneCameraRotationScaleAdjust * (i_9_ - Main.camera.pitch) / 1000;
+//                if(Main.camera.pitch > i_9_)
+//                    Main.camera.pitch = i_9_;
+//            }
+//            if(Main.camera.pitch > i_9_) {
+//                Main.camera.pitch -= MovedStatics.cutsceneCameraRotationScaleAdjust * (Main.camera.pitch + -i_9_) / 1000 + Class60.cutsceneCameraRotationBaseAdjust;
+//                if(Main.camera.pitch < i_9_)
+//                    Main.camera.pitch = i_9_;
+//            }
+//            int i_12_ = i_10_ + -Main.camera.yaw;
+//            if(i_12_ > 1024)
+//                i_12_ -= 2048;
+//            if(i_12_ < -1024)
+//                i_12_ += 2048;
+//            if(i_12_ < 0 && i_11_ > 0 || i_12_ > 0 && i_11_ < 0)
+//                Main.camera.yaw = i_10_;
+//        }
     }
 
     public static void updateGame() {
